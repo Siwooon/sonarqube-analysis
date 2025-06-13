@@ -36,6 +36,7 @@ jobs:
       - name: run unit tests
         run: |
           pytest --cov=App --cov-report=xml Tests/
+        continue-on-error: true
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5

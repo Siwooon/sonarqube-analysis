@@ -32,31 +32,31 @@ def list_ressources(
 
 @router.get("/{ressource_id}", response_model=Ressource)
 def get_ressource(
-    res_id: str,
+    ressource_id: str,
     service: RessourceService = Depends(get_ressource_service)
 ) -> Ressource:
-    res = service.get_ressource(res_id)
+    res = service.get_ressource(ressource_id)
     if not res:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Ressource non trouvée")
     return res
 
 @router.put("/{ressource_id}", response_model=Ressource)
 def update_ressource(
-    res_id: str,
+    ressource_id: str,
     res_in: RessourceCreate,
     service: RessourceService = Depends(get_ressource_service)
 ) -> Ressource:
     try:
-        return service.update_ressource(res_id, res_in)
+        return service.update_ressource(ressource_id, res_in)
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
 
 @router.delete("/{ressource_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_ressource(
-    res_id: str,
+    ressource_id: str,
     service: RessourceService = Depends(get_ressource_service)
 ):
     try:
-        service.delete_ressource(res_id)
+        service.delete_ressource(ressource_id)
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
