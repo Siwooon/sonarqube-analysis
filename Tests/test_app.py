@@ -2,7 +2,7 @@ import pytest
 import uuid
 import secrets
 from fastapi.testclient import TestClient
-from App.main import app
+from app.main import app
 
 client = TestClient(app)
 

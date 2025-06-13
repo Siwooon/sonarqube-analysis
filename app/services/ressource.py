@@ -26,15 +26,15 @@ class RessourceService:
         r = self.res_repo.create(res_in)
         return Ressource.from_orm(r)
 
-    def update_ressource(self, res_id: str, res_in: RessourceCreate) -> Ressource:
-        r = self.res_repo.get(res_id)
+    def update_ressource(self, ressource_id: str, res_in: RessourceCreate) -> Ressource:
+        r = self.res_repo.get(ressource_id)
         if not r:
             raise ValueError("Ressource non trouvée")
         updated = self.res_repo.update(r, res_in)
         return Ressource.from_orm(updated)
 
-    def delete_ressource(self, res_id: str) -> Ressource:
-        r = self.res_repo.get(res_id)
+    def delete_ressource(self, ressource_id: str) -> Ressource:
+        r = self.res_repo.get(ressource_id)
         if not r:
             raise ValueError("Ressource non trouvée")
         self.res_repo.delete(r)
