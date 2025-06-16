@@ -8,3 +8,5 @@ httpx
 pytest
 pytest-cov
 python-dotenv
+pydantic_extra_types
+pycountry

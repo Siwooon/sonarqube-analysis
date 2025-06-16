@@ -16,8 +16,11 @@ def create_user(
 ) -> User:
     try:
         return service.create_user(user_in)
-    except ValueError as e:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Impossible de créer l'utilisateur"
+        )
 
 @router.get("/", response_model=List[User])
 def list_users(
@@ -34,7 +37,10 @@ def get_user(
 ) -> User:
     user = service.get_user(user_id)
     if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Utilisateur non trouvé")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Utilisateur non trouvé"
+        )
     return user
 
 @router.put("/{user_id}", response_model=User)
@@ -45,8 +51,11 @@ def update_user(
 ) -> User:
     try:
         return service.update_user(user_id, user_in)
-    except ValueError as e:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Impossible de mettre à jour l'utilisateur"
+        )
 
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_user(
@@ -55,5 +64,8 @@ def delete_user(
 ):
     try:
         service.delete_user(user_id)
-    except ValueError as e:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Impossible de supprimer l'utilisateur"
+        )

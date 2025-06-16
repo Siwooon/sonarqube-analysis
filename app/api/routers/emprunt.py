@@ -18,10 +18,10 @@ def emprunter(
 ) -> Emprunt:
     try:
         return service.create_emprunt(empr_in)
-    except ValueError as e:
+    except ValueError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
+            detail="Impossible de créer l'emprunt"
         )
 
 @router.get(
@@ -61,8 +61,8 @@ def rendre_emprunt(
 ):
     try:
         service.rendre_emprunt(emprunt_id)
-    except ValueError as e:
+    except ValueError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=str(e)
+            detail="Emprunt non trouvé ou déjà rendu"
         )
