@@ -147,3 +147,123 @@ uvicorn app.api.main:app --reload
     npm run dev
 
 ```
+
+---
+
+## Qualité du code & SonarQube
+
+### SonarQube
+
+La qualité du code est analysée par **SonarQube** (linting, tests, sécurité, duplications…) à chaque push sur la branche `main` et à chaque pull request.
+
+- Rapport accessible sur le serveur SonarQube : [SonarQube Server](http://sonarqube.ensiie.fr/)
+- Projet : `mediathèque-api`
+- Nécessite un compte utilisateur sur le serveur
+
+### Installation locale de SonarQube
+
+Pour les développeurs souhaitant une instance locale de SonarQube :
+
+1. **Docker** : Assurez-vous que Docker est installé et en cours d'exécution.
+2. **Lancer SonarQube** : 
+   ```bash
+   docker run -d --name sonarqube -p 9000:9000 -e SONAR_JDBC_URL=jdbc:postgresql://host.docker.internal:5432/sonar -e SONAR_JDBC_USERNAME=sonar -e SONAR_JDBC_PASSWORD=sonarpassword sonarqube
+   ```
+3. **Accéder à SonarQube** : Ouvrez votre navigateur et allez à l'adresse [http://localhost:9000](http://localhost:9000).
+
+### Analyse locale
+
+Pour effectuer une analyse locale avant de pousser vos changements :
+
+```bash
+# 1. Installer les dépendances requises
+pip install bandit black isort flake8 mypy pytest pytest-cov
+
+# 2. Exécuter les outils de qualité
+bandit -r app/  # Analyse de sécurité
+black --check app/  # Formatage
+isort --check-only app/  # Ordre des imports
+flake8 app/  # Linting
+mypy app/  # Vérification des types
+pytest --cov=app tests/  # Tests et couverture
+```
+
+---
+
+## Intégration continue : Qualité & Sécurité
+
+### Pipeline SonarQube (GitHub Actions)
+
+Un pipeline CI est configuré pour analyser la qualité du code à chaque pull request, exécution manuelle ou chaque nuit (minuit UTC) via [GitHub Actions](https://github.com/features/actions) :
+
+- **Analyse SonarQube** :
+  - Linting, détection de bugs, vulnérabilités, duplications, couverture de tests…
+  - Génération automatique du rapport de couverture (`coverage.xml`) avec `pytest`.
+  - Nécessite les secrets `SONAR_HOST_URL` et `SONAR_TOKEN` dans les paramètres du repo.
+
+Extrait du workflow :
+
+```yaml
+name: SonarQube Analysis
+on:
+  workflow_dispatch:
+  pull_request:
+  schedule:
+    - cron: "0 0 * * *"
+jobs:
+  sonarqube:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Install Node.js dependencies
+        run: |
+          cd src
+          npm ci
+      - name: run unit tests
+        run: |
+          pytest --cov=App --cov-report=xml Tests/
+        continue-on-error: true
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+```
+
+### Mises à jour automatiques des dépendances (Dependabot)
+
+Le projet utilise [Dependabot](https://docs.github.com/fr/code-security/dependabot) pour surveiller et proposer automatiquement des pull requests de mise à jour des dépendances Python (`requirements.txt`) et Node.js (`src/package.json`).
+
+- **Fréquence** : quotidienne (`daily`)
+- **Sécurité** : chaque PR est testée par le pipeline CI
+- **Configuration** : `.github/dependabot.yml`
+
+---
+
+## Respect du cahier des charges
+
+- [x] API REST complète (CRUD, filtres, tri, pagination)
+- [x] Authentification JWT
+- [x] Documentation Swagger
+- [x] Tests unitaires et d'intégration
+- [x] Gestion des erreurs
+- [x] Logging
+- [x] Dockerisation
+- [x] CI/CD avec GitHub Actions
+- [x] Analyse de code avec SonarQube
+- [x] Mise à jour automatique des dépendances avec Dependabot
+
+---
