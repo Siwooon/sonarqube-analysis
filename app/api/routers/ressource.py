@@ -13,7 +13,13 @@ def create_ressource(
     res_in: RessourceCreate,
     service: RessourceService = Depends(get_ressource_service)
 ) -> Ressource:
-    return service.create_ressource(res_in)
+    try:
+        return service.create_ressource(res_in)
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Impossible de créer la ressource"
+        )
 
 @router.get("/", response_model=List[Ressource])
 def list_ressources(
@@ -37,7 +43,10 @@ def get_ressource(
 ) -> Ressource:
     res = service.get_ressource(ressource_id)
     if not res:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Ressource non trouvée")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Ressource non trouvée"
+        )
     return res
 
 @router.put("/{ressource_id}", response_model=Ressource)
@@ -48,8 +57,11 @@ def update_ressource(
 ) -> Ressource:
     try:
         return service.update_ressource(ressource_id, res_in)
-    except ValueError as e:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Impossible de mettre à jour la ressource"
+        )
 
 @router.delete("/{ressource_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_ressource(
@@ -58,5 +70,8 @@ def delete_ressource(
 ):
     try:
         service.delete_ressource(ressource_id)
-    except ValueError as e:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Impossible de supprimer la ressource"
+        )

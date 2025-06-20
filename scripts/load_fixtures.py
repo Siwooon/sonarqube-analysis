@@ -24,16 +24,16 @@ def main(drop_first: bool = True):
     try:
         # 1. DÉCLARATION DES DONNÉES
         users_data = [
-            {"nom": "Dupont", "prenom": "Jean", "mail": "jean.dupont@mail.com", "numero_telephone": "+33601020304", "nationalite": "Française"},
-            {"nom": "Martin", "prenom": "Alice", "mail": "alice.martin@mail.com", "numero_telephone": "+32477112233", "nationalite": "Belge"},
-            {"nom": "Garcia", "prenom": "Pablo", "mail": "pablo.garcia@mail.com", "numero_telephone": "+34911223344", "nationalite": "Espagnole"},
-            {"nom": "Smith", "prenom": "Emily", "mail": "emily.smith@mail.com", "numero_telephone": "+447700900123", "nationalite": "Anglaise"},
-            {"nom": "Nguyen", "prenom": "Minh", "mail": "minh.nguyen@mail.com", "numero_telephone": "+84912345678", "nationalite": "Vietnamienne"},
-            {"nom": "Kowalski", "prenom": "Anna", "mail": "anna.kowalski@mail.com", "numero_telephone": "+48221122334", "nationalite": "Polonaise"},
-            {"nom": "Dubois", "prenom": "Lucas", "mail": "lucas.dubois@mail.com", "numero_telephone": "+33698765432", "nationalite": "Française"},
-            {"nom": "Schmidt", "prenom": "Sophie", "mail": "sophie.schmidt@mail.com", "numero_telephone": "+4915112345678", "nationalite": "Allemande"},
-            {"nom": "Rossi", "prenom": "Marco", "mail": "marco.rossi@mail.com", "numero_telephone": "+393491234567", "nationalite": "Italienne"},
-            {"nom": "Fernandez", "prenom": "Lucia", "mail": "lucia.fernandez@mail.com", "numero_telephone": "+34611223344", "nationalite": "Espagnole"}
+            {"nom": "Dupont", "prenom": "Jean", "mail": "jean.dupont@mail.com", "numero_telephone": "+33601020304", "nationalite": "FR"},
+            {"nom": "Martin", "prenom": "Alice", "mail": "alice.martin@mail.com", "numero_telephone": "+32477112233", "nationalite": "BE"},
+            {"nom": "Garcia", "prenom": "Pablo", "mail": "pablo.garcia@mail.com", "numero_telephone": "+34911223344", "nationalite": "ES"},
+            {"nom": "Smith", "prenom": "Emily", "mail": "emily.smith@mail.com", "numero_telephone": "+447700900123", "nationalite": "GB"},
+            {"nom": "Nguyen", "prenom": "Minh", "mail": "minh.nguyen@mail.com", "numero_telephone": "+84912345678", "nationalite": "VN"},
+            {"nom": "Kowalski", "prenom": "Anna", "mail": "anna.kowalski@mail.com", "numero_telephone": "+48221122334", "nationalite": "PL"},
+            {"nom": "Dubois", "prenom": "Lucas", "mail": "lucas.dubois@mail.com", "numero_telephone": "+33698765432", "nationalite": "FR"},
+            {"nom": "Schmidt", "prenom": "Sophie", "mail": "sophie.schmidt@mail.com", "numero_telephone": "+4915112345678", "nationalite": "DE"},
+            {"nom": "Rossi", "prenom": "Marco", "mail": "marco.rossi@mail.com", "numero_telephone": "+393491234567", "nationalite": "IT"},
+            {"nom": "Fernandez", "prenom": "Lucia", "mail": "lucia.fernandez@mail.com", "numero_telephone": "+34611223344", "nationalite": "ES"}
         ]
 
         livres_data = [
